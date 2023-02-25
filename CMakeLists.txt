@@ -12,18 +12,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall -Wextra -pedantic -Wformat=2 -g)
 
 set(LIBRARY_NAME ${PROJECT_NAME})
-set(EXECUTABLE_NAME convert)
 
 find_package(fmt REQUIRED)
 
 add_library(${LIBRARY_NAME} OBJECT
-        ${PROJECT_SOURCE_DIR}/lib/hello.cpp)
+        lib/hello.cpp)
 
 target_include_directories(${LIBRARY_NAME}
-        PUBLIC ${PROJECT_SOURCE_DIR}/include)
+        PUBLIC include)
 
 target_link_libraries(${LIBRARY_NAME}
         PRIVATE fmt::fmt)
 
-add_executable(${EXECUTABLE_NAME} ${PROJECT_SOURCE_DIR}/src/convert.cpp)
-target_link_libraries(${EXECUTABLE_NAME} ${LIBRARY_NAME})
+# convert executable
+set(EXECUTABLE_NAME convert)
+add_executable(${EXECUTABLE_NAME} src/convert.cpp)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${LIBRARY_NAME})
+
+# test executable
+add_subdirectory(test)
