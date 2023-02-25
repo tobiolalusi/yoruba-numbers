@@ -16,13 +16,13 @@ set(LIBRARY_NAME ${PROJECT_NAME})
 find_package(fmt REQUIRED)
 
 add_library(${LIBRARY_NAME} OBJECT
-        lib/hello.cpp)
+        lib/converter.cpp)
 
 target_include_directories(${LIBRARY_NAME}
         PUBLIC include)
 
 target_link_libraries(${LIBRARY_NAME}
-        PRIVATE fmt::fmt)
+        PUBLIC fmt::fmt)
 
 # convert executable
 set(EXECUTABLE_NAME convert)
