@@ -19,7 +19,7 @@ namespace {
   }
 
   // reads the tens of 200, specifically with more or less concatenation
-  std::string ten_concat(uint32_t index, std::string &prefix) {
+  std::string ten_concat(uint32_t index, std::string& prefix) {
     if (index == 2) return prefix + "ógún";
     if (index == 3) return prefix + "ọ́gbọ̀n";
     if (index % 2 == 0) {
@@ -30,15 +30,13 @@ namespace {
     return prefix + lookuptable::basic_ten_suffix.at(index / 2 + 1);
   }
 
-  std::string ten(uint32_t index, concat_mode mode = none) {
+  std::string ten(uint32_t index, const concat_mode& mode = none) {
     if (mode == concat_mode::none) return ten_none(index);
     std::string prefix{};
     if (mode == concat_mode::less) {
-      ++index;         // bottom is based on the next ten
-      prefix = "dínl"; // din-ni-
-    } else {
-      prefix = "lel"; // le-ni-
-    }
+      ++index;             // bottom is based on the next ten
+      prefix = "dínl";     // din-ni-
+    } else prefix = "lel"; // le-ni-
     return ten_concat(index, prefix);
   }
 

@@ -9,10 +9,10 @@ namespace converter {
   std::string to_text(uint32_t input);
 
   // convert text in yoruba to uppercase
-  void to_uppercase(const std::string &input);
+  void to_uppercase(const std::string& input);
 
   // capitalize text in yoruba
-  void capitalize(const std::string &input);
+  void capitalize(const std::string& input);
 
 }; // namespace converter
 
