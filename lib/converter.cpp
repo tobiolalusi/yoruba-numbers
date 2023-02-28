@@ -2,51 +2,49 @@
 #include "lookuptable.hh"
 
 namespace {
-  enum concat_mode { more, less, none };
-
-  // reads the tens of 200 i.e. [10, 20, 30, 40, 50, 60, 70, ..., 190]
-  std::string ten_none(uint32_t index) {
-    if (index == 1) return "ẹẹ́wàá";
-    if (index == 2) return "ogún";
-    if (index == 3) return "ọgbọ̀n";
+  // reads the tens of 200 i.e. {40, 50, 60, 70, ..., 190}
+  // {10, 20, 30} are already special
+  std::string factor20_ten(uint32_t input) {
+    auto factor = input / 20;
+    auto rest = input % 20;
     std::string prefix{};
-    if (index % 2 == 0) {
-      prefix = index == 4 || index == 14 ? "ogó" : "ọgọ́";
-      return prefix + lookuptable::basic_ten_suffix.at(index / 2);
+    if (rest < 10) {
+      // considers 40 and 140 special pronunciation
+      prefix = factor == 2 || factor == 7 ? "ogó" : "ọgọ́";
+      return prefix + lookuptable::basic_ten_rhs.at(factor);
     }
-    prefix = index == 13 ? "àádó" : "àádọ́";
-    return prefix + lookuptable::basic_ten_suffix.at(index / 2 + 1);
+    // considers 130 special pronunciation
+    prefix = factor == 6 ? "àádó" : "àádọ́";
+    return prefix + lookuptable::basic_ten_rhs.at(factor + 1);
   }
 
-  // reads the tens of 200, specifically with more or less concatenation
-  std::string ten_concat(uint32_t index, std::string& prefix) {
+  std::string factor20_ten_concat_base(uint32_t input) {
+    auto index = input / 10;
+    auto is_upperbound = input % 10 < 5;
+    if (!is_upperbound) index++; // bottom is based on next ten
+    std::string prefix = is_upperbound ? "lel" : "dínl";
     if (index == 2) return prefix + "ógún";
     if (index == 3) return prefix + "ọ́gbọ̀n";
     if (index % 2 == 0) {
+      // considers 40 and 140 special pronunciation
       prefix += index == 4 || index == 14 ? "ógó" : "ọ́gọ́";
-      return prefix + lookuptable::basic_ten_suffix.at(index / 2);
+      return prefix + lookuptable::basic_ten_rhs.at(index / 2);
     }
+    // considers 130 special pronunciation
     prefix += index == 13 ? "áàdó" : "áàdọ́";
-    return prefix + lookuptable::basic_ten_suffix.at(index / 2 + 1);
+    return prefix + lookuptable::basic_ten_rhs.at(index / 2 + 1);
   }
 
-  std::string ten(uint32_t index, const concat_mode& mode = none) {
-    if (mode == concat_mode::none) return ten_none(index);
-    std::string prefix{};
-    if (mode == concat_mode::less) {
-      ++index;             // bottom is based on the next ten
-      prefix = "dínl";     // din-ni-
-    } else prefix = "lel"; // le-ni-
-    return ten_concat(index, prefix);
-  }
-
-  std::string hundred(uint32_t input) {
+  std::string factor20_concat(uint32_t input) {
     auto unit_pos = input % 10;
-    if (unit_pos == 0) return ten(input / 10, concat_mode::none);
-    auto is_upperbound = unit_pos < 5;
-    auto mode = is_upperbound ? concat_mode::more : concat_mode::less;
-    auto unit_index = is_upperbound ? unit_pos : 10 - unit_pos;
-    return lookuptable::basic.at(unit_index).second + ten(input / 10, mode);
+    auto unit_index = unit_pos < 5 ? unit_pos : 10 - unit_pos;
+    return lookuptable::basic_lhs.at(unit_index) +
+           factor20_ten_concat_base(input);
+  }
+
+  std::string factor20(uint32_t input) {
+    if (input % 10 == 0) return factor20_ten(input);
+    return factor20_concat(input);
   }
 
 } // namespace
@@ -54,7 +52,7 @@ namespace {
 std::string converter::to_text(uint32_t input) {
   if (lookuptable::specials.contains(input))
     return lookuptable::specials.at(input);
-  if (input < 10) return lookuptable::basic.at(input).first;
-  if (input < 195) return hundred(input);
+  if (input < 10) return lookuptable::basic.at(input);
+  if (input < 195) return factor20(input);
   return "Only numbers up to 194 are currently supported.";
 }
