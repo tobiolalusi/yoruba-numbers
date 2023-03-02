@@ -16,7 +16,9 @@ set(LIBRARY_NAME ${PROJECT_NAME})
 find_package(fmt REQUIRED)
 
 add_library(${LIBRARY_NAME} OBJECT
-        lib/converter.cpp)
+        lib/converter.cpp
+        lib/factor20.cpp
+        lib/unit.cpp)
 
 target_include_directories(${LIBRARY_NAME}
         PUBLIC include)
