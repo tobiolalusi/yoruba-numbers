@@ -15,9 +15,9 @@ std::array<std::string, 6> Unit::basic_lhs{
 Unit::operator std::string() const { return basic.at(input); }
 
 std::string Unit::operator+(const std::string& rhs) const {
-  return basic_lhs.at(input) + "lel" + rhs;
+  return basic_lhs.at(input) + rhs;
 }
 
 std::string Unit::operator-(const std::string& rhs) const {
-  return basic_lhs.at(10 - input) + "dínl" + rhs;
+  return basic_lhs.at(10 - input) + rhs;
 }

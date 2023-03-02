@@ -15,10 +15,9 @@ set(LIBRARY_NAME ${PROJECT_NAME})
 
 find_package(fmt REQUIRED)
 
-add_library(${LIBRARY_NAME} OBJECT
-        lib/converter.cpp
-        lib/factor20.cpp
-        lib/unit.cpp)
+file(GLOB LIBRARY_SOURCES lib/*.cpp)
+
+add_library(${LIBRARY_NAME} OBJECT ${LIBRARY_SOURCES})
 
 target_include_directories(${LIBRARY_NAME}
         PUBLIC include)

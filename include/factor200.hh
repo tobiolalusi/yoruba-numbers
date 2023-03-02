@@ -1,16 +1,15 @@
-#ifndef FACTOR20_HH
-#define FACTOR20_HH
+#ifndef FACTOR200_HH
+#define FACTOR200_HH
 
-#include <array>
 #include <string>
 #include <unordered_map>
 
-class Factor20 {
+class Factor200 {
   public:
-  static std::unordered_map<uint32_t, std::string> basic;
+  static std::unordered_map<uint32_t, std::string> specials;
   static std::array<std::string, 6> basic_lhs;
 
-  Factor20(uint32_t input) : input(input){};
+  Factor200(uint32_t input) : input(input){};
 
   operator std::string() const;
 
@@ -25,4 +24,4 @@ class Factor20 {
   [[nodiscard]] std::string concat_base(bool next = false) const;
 };
 
-#endif // FACTOR20_HH
+#endif // FACTOR200_HH

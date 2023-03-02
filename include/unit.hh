@@ -4,8 +4,6 @@
 #include <array>
 #include <string>
 
-#include "factor20.hh"
-
 class Unit {
   public:
   static std::array<std::string, 10> basic;
@@ -15,6 +13,7 @@ class Unit {
 
   operator std::string() const;
 
+  // concatenation operators
   std::string operator+(const std::string& rhs) const;
   std::string operator-(const std::string& rhs) const;
 

@@ -2,38 +2,57 @@
 #include "lookuptable.hh"
 #include "unit.hh"
 
+std::unordered_map<uint32_t, std::string> Factor20::basic{
+  {10, "ẹẹ́wàá"},  {11, "ọọ́kànlá"},  {12, "eéjìlá"},
+  {13, "ẹẹ́tàlá"}, {14, "ẹẹ́rìnlá"},  {15, "ẹ̀ẹ́dógún"},
+  {20, "ogún"},   {25, "ẹ̀ẹ́dọ́gbọ̀n"}, {30, "ọgbọ̀n"},
+};
+
 Factor20::operator std::string() const {
-  auto unit_idx = input % 10;
-  if (unit_idx == 0) return ten();
-  if (unit_idx < 5) return Unit{unit_idx} + concat_base();
-  return Unit{unit_idx} - concat_base(true);
+  if (input < 10) return Unit{input};
+  if (basic.contains(input)) return basic.at(input);
+  auto unit = input % 10;
+  if (unit == 0) return ten();
+  if (unit < 5) return Unit{unit} + concat_base();
+  return Unit{unit} - concat_base(true);
+}
+
+std::string Factor20::operator+(const std::string& rhs) const {
+  return static_cast<std::string>(*this) + rhs;
+}
+
+std::string Factor20::operator-(const std::string& rhs) const {
+  return Factor20{100 - input} + rhs;
 }
 
 std::string Factor20::concat_base(bool next) const {
   auto factor10 = input / 10;
-  if (next) factor10++;
-  if (factor10 == 2) return "ógún";
-  if (factor10 == 3) return "ọ́gbọ̀n";
+  std::string prefix{};
+  if (next) {
+    factor10++;
+    prefix = "dínl";
+  } else prefix = "lel";
+  if (factor10 == 2) return prefix + "ógún";
+  if (factor10 == 3) return prefix + "ọ́gbọ̀n";
   if (factor10 % 2 == 0) {
     // considers 40 and 140 special pronunciation
-    auto prefix = factor10 == 4 || factor10 == 14 ? "ógó" : "ọ́gọ́";
+    prefix += factor10 == 4 || factor10 == 14 ? "ógó" : "ọ́gọ́";
     return prefix + lookuptable::basic_ten_rhs.at(factor10 / 2);
   }
   // considers 130 special pronunciation
-  auto prefix = factor10 == 13 ? "áàdó" : "áàdọ́";
+  prefix += factor10 == 13 ? "áàdó" : "áàdọ́";
   return prefix + lookuptable::basic_ten_rhs.at(factor10 / 2 + 1);
 }
 
 std::string Factor20::ten() const {
   auto factor = input / 20;
   auto rest = input % 20;
-  std::string prefix{};
   if (rest < 10) {
     // considers 40 and 140 special pronunciation
-    prefix = factor == 2 || factor == 7 ? "ogó" : "ọgọ́";
+    auto prefix = factor == 2 || factor == 7 ? "ogó" : "ọgọ́";
     return prefix + lookuptable::basic_ten_rhs.at(factor);
   }
   // considers 130 special pronunciation
-  prefix = factor == 6 ? "àádó" : "àádọ́";
+  auto prefix = factor == 6 ? "àádó" : "àádọ́";
   return prefix + lookuptable::basic_ten_rhs.at(factor + 1);
 }
