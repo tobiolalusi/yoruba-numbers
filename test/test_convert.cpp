@@ -101,7 +101,7 @@ TEST_CASE("10s of 2000") {
   CHECK_EQ(converter::to_text(1000), "ẹgbẹ̀rùn-ún");
   CHECK_EQ(converter::to_text(1200), "ẹgbẹ̀fà");
   CHECK_EQ(converter::to_text(1600), "ẹgbẹ̀jọ");
-  CHECK_EQ(converter::to_text(2000), "ẹgbàá");
+  CHECK_EQ(converter::to_text(1900), "ẹ̀ẹ́dẹ́gbẹ̀wàá");
 }
 
 TEST_CASE("10 different numbers between 195 and 2000") {
