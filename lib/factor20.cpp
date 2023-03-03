@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "factor20.hh"
 #include "factor0.hh"
 #include "lookuptable.hh"
