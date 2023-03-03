@@ -10,11 +10,11 @@ std::unordered_map<uint32_t, std::string> Factor200::specials{
 };
 
 Factor200::operator std::string() const {
+  if (input < 200) return Factor20{input};
   if (specials.contains(input)) return specials.at(input);
   auto unit20 = input % 100;
   if (unit20 == 0) return ten();
-  if (unit20 % 10 < 5) return Factor20{unit20} + concat_base();
-  return Factor20{unit20} - concat_base(true);
+  return Factor20{unit20} + concat_base(unit20 > 44);
 }
 
 std::string Factor200::concat_base(bool next) const {
@@ -27,6 +27,7 @@ std::string Factor200::concat_base(bool next) const {
   if (factor100 == 2) return prefix + "léerúgba";
   if (factor100 == 3) return prefix + "lọ́ọ̀dúnrún";
   if (factor100 == 4) return prefix + "léerinwó";
+  if (factor100 == 20) return prefix + "léegbàá";
   if (factor100 % 2 == 0) {
     prefix += factor100 == 14 ? "légbé" : "lẹ́gbẹ̀";
     return prefix + lookuptable::basic_ten_rhs.at(factor100 / 2);

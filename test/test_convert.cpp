@@ -102,19 +102,22 @@ TEST_CASE("10s of 2000") {
   CHECK_EQ(converter::to_text(1200), "ẹgbẹ̀fà");
   CHECK_EQ(converter::to_text(1600), "ẹgbẹ̀jọ");
   CHECK_EQ(converter::to_text(1900), "ẹ̀ẹ́dẹ́gbẹ̀wàá");
+  CHECK_EQ(converter::to_text(2000), "ẹgbàá");
 }
 
-TEST_CASE("10 different numbers between 195 and 2000") {
-  CHECK_EQ(converter::to_text(201), "oókanléerúgba");
+TEST_CASE("12 different numbers between 195 and 2000") {
+  CHECK_EQ(converter::to_text(201), "oókànléerúgba");
+  CHECK_EQ(converter::to_text(205), "aárùnléerúgba");
   CHECK_EQ(converter::to_text(210), "ẹẹ́wàáléerúgba");
   CHECK_EQ(converter::to_text(355), "aárùndínláàdọ́tadίnléerinwó");
-  CHECK_EQ(converter::to_text(717), "ẹẹ́tàlelọ́gọ́rindίnlẹ́gbẹ̀rin");
+  CHECK_EQ(converter::to_text(717), "ẹẹ́tàdínlógúnlẹ́ẹ̀dẹ́gbẹ̀rin");
   CHECK_EQ(converter::to_text(898), "eéjìdίnlẹ́ẹ̀dẹ́gbẹ̀rùn-ún");
   CHECK_EQ(converter::to_text(1102), "eéjìlẹ́ẹ̀dẹ́gbẹ̀fà");
   CHECK_EQ(converter::to_text(1333), "ẹẹ́tàlelọ́gbọ̀nlẹ́ẹ̀dẹ́gbéje");
   CHECK_EQ(converter::to_text(1749), "oókànleláàdọ́tadίnlẹ́gbẹ̀sàn-án");
   CHECK_EQ(converter::to_text(1833), "ẹẹ́tàlelọ́gbọ̀nlẹ́gbẹ̀sàn-án");
-  CHECK_EQ(converter::to_text(1984), "ẹẹ́rìnlelọ́gọ́rinlẹ́ẹ̀dẹ́gbẹ̀wàá");
+  CHECK_EQ(converter::to_text(1984), "ẹẹ́rìndínlógúndίnléegbàá");
+  CHECK_EQ(converter::to_text(1999), "oókàndίnléegbàá");
 }
 
 TEST_SUITE_END();

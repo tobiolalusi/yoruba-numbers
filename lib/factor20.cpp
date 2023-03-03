@@ -1,6 +1,6 @@
 #include "factor20.hh"
+#include "factor0.hh"
 #include "lookuptable.hh"
-#include "unit.hh"
 
 std::unordered_map<uint32_t, std::string> Factor20::basic{
   {10, "ẹẹ́wàá"},  {11, "ọọ́kànlá"},  {12, "eéjìlá"},
@@ -9,20 +9,23 @@ std::unordered_map<uint32_t, std::string> Factor20::basic{
 };
 
 Factor20::operator std::string() const {
-  if (input < 10) return Unit{input};
+  if (input < 10) return Factor0{input};
   if (basic.contains(input)) return basic.at(input);
   auto unit = input % 10;
   if (unit == 0) return ten();
-  if (unit < 5) return Unit{unit} + concat_base();
-  return Unit{unit} - concat_base(true);
+  return Factor0{unit} + concat_base(unit > 4);
 }
 
 std::string Factor20::operator+(const std::string& rhs) const {
-  return static_cast<std::string>(*this) + rhs;
+  return +*this + rhs;
 }
 
-std::string Factor20::operator-(const std::string& rhs) const {
-  return Factor20{100 - input} + rhs;
+std::string Factor20::operator+() const {
+  if (input > 99)
+    throw std::runtime_error{"[Factor20]: concatenation with lhs > 99"};
+  auto index = input < 45 ? input : 100 - input;
+  if (index < 10) return +Factor0{index};
+  return Factor20{index};
 }
 
 std::string Factor20::concat_base(bool next) const {

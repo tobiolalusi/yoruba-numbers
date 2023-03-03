@@ -1,5 +1,5 @@
-#ifndef FACTOR20_HH
-#define FACTOR20_HH
+#ifndef FACTOR0_HH
+#define FACTOR0_HH
 
 #include <array>
 #include <string>
@@ -7,19 +7,18 @@
 
 #include "factor.hh"
 
-class Factor20 : Factor {
-  using Factor::Factor;
-
+class Factor0 : Factor {
   public:
-  static std::unordered_map<uint32_t, std::string> basic;
+  using Factor::Factor;
+  static std::array<std::string, 10> basic;
   static std::array<std::string, 6> basic_lhs;
   operator std::string() const override;
   std::string operator+(const std::string& rhs) const override;
   std::string operator+() const override;
 
   private:
-  [[nodiscard]] std::string ten() const override;
-  [[nodiscard]] std::string concat_base(bool) const override;
+  [[nodiscard]] std::string ten() const override { return ""; }
+  [[nodiscard]] std::string concat_base(bool) const override { return ""; }
 };
 
-#endif // FACTOR20_HH
+#endif // FACTOR0_HH
